@@ -1,0 +1,109 @@
+{
+  "cascadeColors": true,
+  "colorBackground": false,
+  "palette": [
+    {
+      "id": "oNiTCi9nDfxKrzTjjciMv",
+      "name": "work",
+      "value": "#098500"
+    },
+    {
+      "id": "BZT4CK5kfuC3RjPaunaye",
+      "name": "linux",
+      "value": "#0091ff"
+    },
+    {
+      "id": "NJaEtrSoq5l_RphBWF_GF",
+      "name": "food",
+      "value": "#ff4242"
+    },
+    {
+      "id": "MMchA2UEMg_HFYwURFHP0",
+      "name": "Files",
+      "value": "#666666"
+    },
+    {
+      "id": "6EeFaBJbE4h2gwHTVNfDM",
+      "name": "Global",
+      "value": "#c76000"
+    },
+    {
+      "id": "i0VkTaR6L2fQ1iyOWcwFQ",
+      "name": "Важное",
+      "value": "#c7ac00"
+    },
+    {
+      "id": "MKbPtVF5IUm-tEsbu8GQy",
+      "name": "",
+      "value": "#ff0000"
+    },
+    {
+      "id": "jKszDQ61hedZBiyw_lfNi",
+      "name": "",
+      "value": "#2bff00"
+    },
+    {
+      "id": "E2paNk7PkTGqrObhrQyVN",
+      "name": "Films",
+      "value": "#cc0081"
+    }
+  ],
+  "fileColors": [
+    {
+      "path": "Work",
+      "color": "oNiTCi9nDfxKrzTjjciMv"
+    },
+    {
+      "path": "03-Linux",
+      "color": "BZT4CK5kfuC3RjPaunaye"
+    },
+    {
+      "path": "01-Food",
+      "color": "NJaEtrSoq5l_RphBWF_GF"
+    },
+    {
+      "path": "99-Files",
+      "color": "MMchA2UEMg_HFYwURFHP0"
+    },
+    {
+      "path": "00-Global",
+      "color": "6EeFaBJbE4h2gwHTVNfDM"
+    },
+    {
+      "path": "03-Linux/Install Arch Linux.md",
+      "color": "oNiTCi9nDfxKrzTjjciMv"
+    },
+    {
+      "path": "03-Linux/Programs/Kitty.md",
+      "color": "oNiTCi9nDfxKrzTjjciMv"
+    },
+    {
+      "path": "03-Linux/Packets/Mega-облако.md",
+      "color": "oNiTCi9nDfxKrzTjjciMv"
+    },
+    {
+      "path": "Excalidraw",
+      "color": "MMchA2UEMg_HFYwURFHP0"
+    },
+    {
+      "path": "Шаблоны",
+      "color": "MMchA2UEMg_HFYwURFHP0"
+    },
+    {
+      "path": "05-Work",
+      "color": "oNiTCi9nDfxKrzTjjciMv"
+    },
+    {
+      "path": "05-Work/Макеты/Виставка_2026_весна/Пульт управления/Пульт управления для виставки.md",
+      "color": "oNiTCi9nDfxKrzTjjciMv"
+    },
+    {
+      "path": "02-Films",
+      "color": "E2paNk7PkTGqrObhrQyVN"
+    },
+    {
+      "path": "05-Work/Макеты/Тренажер_2026/Data/Routes",
+      "color": "oNiTCi9nDfxKrzTjjciMv"
+    }
+  ]
+}

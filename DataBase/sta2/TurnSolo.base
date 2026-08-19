@@ -1,0 +1,11 @@
+views:
+  - type: table
+    name: Таблица
+    filters:
+      and:
+        - file.folder == "TurnSolo"
+    order:
+      - file.name
+      - addr_SR
+      - indC_CV
+      - indT_CV

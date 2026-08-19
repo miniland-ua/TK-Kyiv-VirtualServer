@@ -1,0 +1,17 @@
+views:
+  - type: table
+    name: Таблица
+    filters:
+      and:
+        - file.folder == "TurnPair"
+    order:
+      - file.name
+      - Turns
+      - addr_CV
+      - FB_C_C
+      - FB_Lost_CV
+      - FB_T_C
+      - state_SV
+    sort:
+      - property: state_SV
+        direction: ASC

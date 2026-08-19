@@ -1,0 +1,253 @@
+{
+  "main": {
+    "id": "d033a9f8aa7e8556",
+    "type": "split",
+    "children": [
+      {
+        "id": "b621bab66a518896",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "739eb9b567e92477",
+            "type": "leaf",
+            "state": {
+              "type": "excalidraw",
+              "state": {
+                "file": "Excalidraw/Drawing 2026-05-15 13.42.03.excalidraw.md"
+              },
+              "icon": "excalidraw-icon",
+              "title": "Drawing 2026-05-15 13.42.03.excalidraw"
+            }
+          },
+          {
+            "id": "e865deb129f678a1",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
+            }
+          },
+          {
+            "id": "29077fcbf74f8bfb",
+            "type": "leaf",
+            "state": {
+              "type": "excalidraw",
+              "state": {
+                "file": "Excalidraw/Drawing 2026-05-15 13.42.03.excalidraw.md"
+              },
+              "icon": "excalidraw-icon",
+              "title": "Drawing 2026-05-15 13.42.03.excalidraw"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "19c41483e7986b05",
+    "type": "mobile-drawer",
+    "children": [
+      {
+        "id": "8a8699d8fa3c8fcd",
+        "type": "leaf",
+        "state": {
+          "type": "file-explorer",
+          "state": {
+            "sortOrder": "alphabetical",
+            "autoReveal": false
+          },
+          "icon": "lucide-folder-closed",
+          "title": "Файловый менеджер"
+        }
+      },
+      {
+        "id": "d21458f10f4083db",
+        "type": "leaf",
+        "state": {
+          "type": "search",
+          "state": {
+            "query": "",
+            "matchingCase": false,
+            "explainSearch": false,
+            "collapseAll": false,
+            "extraContext": false,
+            "sortOrder": "alphabetical"
+          },
+          "icon": "lucide-search",
+          "title": "Search"
+        }
+      },
+      {
+        "id": "748c1406c2f4911d",
+        "type": "leaf",
+        "state": {
+          "type": "tag",
+          "state": {
+            "sortOrder": "frequency",
+            "useHierarchy": true,
+            "showSearch": false,
+            "searchQuery": ""
+          },
+          "icon": "lucide-tags",
+          "title": "Tags"
+        }
+      },
+      {
+        "id": "d0b8a33d75ba1f08",
+        "type": "leaf",
+        "state": {
+          "type": "all-properties",
+          "state": {
+            "sortOrder": "frequency",
+            "showSearch": false,
+            "searchQuery": ""
+          },
+          "icon": "lucide-archive",
+          "title": "All properties"
+        }
+      },
+      {
+        "id": "73e3674ce6eac673",
+        "type": "leaf",
+        "state": {
+          "type": "bookmarks",
+          "state": {},
+          "icon": "lucide-bookmark",
+          "title": "Bookmarks"
+        }
+      }
+    ],
+    "currentTab": 0
+  },
+  "right": {
+    "id": "4997d4311137ebcf",
+    "type": "mobile-drawer",
+    "children": [
+      {
+        "id": "15de5a7eeac6d9f9",
+        "type": "leaf",
+        "state": {
+          "type": "backlink",
+          "state": {
+            "file": "Install linux.md",
+            "collapseAll": false,
+            "extraContext": false,
+            "sortOrder": "alphabetical",
+            "showSearch": false,
+            "searchQuery": "",
+            "backlinkCollapsed": false,
+            "unlinkedCollapsed": true
+          },
+          "icon": "links-coming-in",
+          "title": "Backlinks"
+        }
+      },
+      {
+        "id": "0de98bdccdbeb8ac",
+        "type": "leaf",
+        "state": {
+          "type": "outgoing-link",
+          "state": {
+            "file": "Покупки.md",
+            "linksCollapsed": false,
+            "unlinkedCollapsed": true
+          },
+          "icon": "links-going-out",
+          "title": "Outgoing links"
+        }
+      },
+      {
+        "id": "547f9f7f1ab77e70",
+        "type": "leaf",
+        "state": {
+          "type": "outline",
+          "state": {
+            "file": "Покупки.md",
+            "followCursor": false,
+            "showSearch": false,
+            "searchQuery": ""
+          },
+          "icon": "lucide-list",
+          "title": "Outline"
+        }
+      },
+      {
+        "id": "f9fa9ad4c2db13e0",
+        "type": "leaf",
+        "state": {
+          "type": "excalidraw-sidepanel",
+          "state": {},
+          "icon": "excalidraw-icon",
+          "title": "Excalidraw Sidepanel"
+        }
+      }
+    ],
+    "currentTab": 3
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Меню быстрого перехода": false,
+      "graph:Граф": false,
+      "canvas:Создать новый холст": false,
+      "daily-notes:Сегодняшняя заметка": false,
+      "templates:Вставить шаблон": false,
+      "command-palette:Открыть палитру команд": false,
+      "bases:Создать новую базу": false,
+      "obsidian-excalidraw-plugin:Создать новый чертеж": false,
+      "oz-clear-unused-images:Clear Unused Images": false,
+      "obsidian-kanban:Create new board": false
+    }
+  },
+  "active": "739eb9b567e92477",
+  "lastOpenFiles": [
+    "Excalidraw/Drawing 2026-05-15 13.42.03.excalidraw.md",
+    "05-Work/Макеты/Макет_2026_04/Drawing 2026-04-27 11.36.26.excalidraw.md",
+    "00-Global/Покупки.md",
+    "Без названия.md",
+    "99-Files/Pasted Image 20260424143939_010.png",
+    "99-Files/Pasted Image 20260424144002_810.png",
+    "99-Files/Pasted image 20260424201600.png",
+    "99-Files/Pasted image 20260422202047.png",
+    "05-Work/Другое/CarSystem/Зарядна станція/Drawing carSystCharging.md",
+    "05-Work/Другое/CarSystem/Зарядна станція/Charger_firmware.md",
+    "05-Work/Другое/CarSystem/Зарядна станція/Charger_model.md",
+    "05-Work/Другое/CarSystem/Зарядна станція/Charger_board.md",
+    "05-Work/Другое/CarSystem/Зарядна станція/Зарядна станція.md",
+    "05-Work/Другое/Display/Drawing 2026-04-24 14.39.23_0.excalidraw.md",
+    "05-Work/Другое/Display/Displays.md",
+    "05-Work/Другое/Invertor Modbus/Імітатор даних ModBus.md",
+    "05-Work/Другое/Invertor Modbus/Сервер послідовних інтерфейсів.md",
+    "05-Work/Другое/Invertor Modbus/Інвертор.md",
+    "05-Work/Другое/Invertor Modbus/ESP-32 WROOM-32.md",
+    "05-Work/Другое/Invertor Modbus/Модуль RS485 (для Інвертара).md",
+    "05-Work/Другое/CarSystem/CarSystem.md",
+    "05-Work/Другое/CarSystem/Зарядна станція",
+    "05-Work/Другое/Разводка плат.md",
+    "05-Work/Другое/Другое (Work).md",
+    "05-Work/Другое/Display",
+    "05-Work/Другое/Invertor Modbus",
+    "05-Work/Другое/CarSystem",
+    "05-Work/Другое",
+    "05-Work/Макеты/Одесса_2025/Camera/OpenIPC Camera (WiFiLink2).md",
+    "05-Work/Макеты/Виставка_2026_весна/Светофорный декодер/LM5118.xlsm",
+    "05-Work/Макеты/Виставка_2026_весна/Светофорный декодер/Плата светофорного декодера.md",
+    "05-Work/Макеты/Виставка_2026_весна/Пульт управления/Пульт управления (draw).md",
+    "05-Work/Макеты/Виставка_2026_весна/Пульт управления/Пульт управления для виставки.md",
+    "05-Work/Макеты/Одесса_2025/TrainController.md",
+    "05-Work/Макеты/Одесса_2025/Одесса_2025.md",
+    "05-Work/Макеты/Одесса_2025/Camera",
+    "05-Work/Макеты/Макет_2026_04/Макет_2026_04.md",
+    "05-Work/Макеты/Виставка_2026_весна/Светофорный декодер",
+    "05-Work/Макеты/Виставка_2026_весна/Пульт управления",
+    "05-Work/Макеты/Одесса_2025",
+    "99-Files/Pasted image 20260421031103.png",
+    "99-Files/Pasted image 20260421184406.png",
+    "99-Files/Pasted image 20260421024246.png",
+    "99-Files/Pasted image 20260419172350.png",
+    "99-Files/Pasted image 20260412210353.png",
+    "99-Files/Pasted Image 20260411194822_437.png"
+  ]
+}

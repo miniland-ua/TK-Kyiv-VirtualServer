@@ -1,0 +1,9 @@
+.vs/
+.tmp/
+
+bin/
+obj/
+build/
+out/
+
+*.csproj.user

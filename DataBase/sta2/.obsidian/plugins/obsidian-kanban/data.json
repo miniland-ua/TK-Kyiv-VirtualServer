@@ -1,0 +1,8 @@
+{
+  "move-tags": true,
+  "move-dates": false,
+  "full-list-lane-width": true,
+  "show-checkboxes": true,
+  "append-archive-date": false,
+  "new-line-trigger": "shift-enter"
+}

@@ -1,0 +1,27 @@
+formulas:
+  Без названия: file.name.replace(/_(shunt|train)$/, "")
+  type: file.name.replace(/^.*_(shunt|train)$/, "$1")
+properties:
+  formula.Без названия:
+    displayName: name
+views:
+  - type: table
+    name: Таблица
+    filters:
+      and:
+        - file.folder == "RouteControl"
+    order:
+      - file.name
+      - formula.Без названия
+      - formula.type
+      - addr_SV
+      - Bridge
+    sort:
+      - property: formula.type
+        direction: ASC
+      - property: type
+        direction: DESC
+      - property: addr_SV
+        direction: ASC
+    columnSize:
+      note.name: 118

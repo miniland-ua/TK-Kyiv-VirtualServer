@@ -1,0 +1,17 @@
+views:
+  - type: table
+    name: Таблица
+    filters:
+      and:
+        - file.folder == "Sections"
+    order:
+      - file.name
+      - Routes
+      - addr_SV
+      - addr_CR
+    sort:
+      - property: Occup
+        direction: ASC
+    columnSize:
+      file.name: 113
+      note.Occup: 158

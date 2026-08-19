@@ -1,0 +1,11 @@
+views:
+  - type: table
+    name: Таблица
+    filters:
+      and:
+        - file.folder == "Separate"
+    order:
+      - file.name
+      - addr_SV
+      - addr_CV
+      - Section

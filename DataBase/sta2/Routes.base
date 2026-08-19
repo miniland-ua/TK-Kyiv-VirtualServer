@@ -1,0 +1,25 @@
+properties:
+  note.addr:
+    displayName: addrSwitch
+views:
+  - type: table
+    name: Таблица
+    filters:
+      and:
+        - file.folder == "Routes"
+    order:
+      - file.name
+      - Points
+      - addr_SV
+      - TurnPair1
+      - stateTurn1
+      - TurnPair2
+      - stateTurn2
+    sort:
+      - property: addr
+        direction: DESC
+    columnSize:
+      note.Bridges: 361
+      note.TurnPair1: 109
+      note.stateTurn1: 129
+      note.TurnPair2: 119

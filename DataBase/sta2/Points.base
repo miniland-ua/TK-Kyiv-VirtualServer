@@ -1,0 +1,27 @@
+properties:
+  note.addr:
+    displayName: addrSwitch
+views:
+  - type: table
+    name: Таблица
+    filters:
+      and:
+        - file.folder == "Points"
+    order:
+      - file.name
+      - addr_base
+      - type
+      - addrInd_CV
+      - direct
+      - prevPoint
+    sort:
+      - property: type
+        direction: ASC
+      - property: addrSw
+        direction: ASC
+      - property: addr
+        direction: DESC
+    columnSize:
+      file.name: 85
+      note.TL_type: 177
+      note.addrSw: 119

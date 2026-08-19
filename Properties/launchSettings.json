@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Z21_TC2026": {
+      "commandName": "Project",
+      "workingDirectory": "."
+    }
+  }
+}
