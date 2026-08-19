@@ -1,4 +1,3 @@
-
 // Кнопка для управления маршрутом
 public class RouteButton {
     public string name; // Имя

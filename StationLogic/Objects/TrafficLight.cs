@@ -22,7 +22,7 @@ public class TrafficLight {
 
     // Сигналы светофора
     private List<Signal> signals = new List<Signal>();
-    private Signal? curSignal; // Текущий сигнал светофора
+    public Signal? curSignal; // Текущий сигнал светофора
 
     // Связь с предыдущим светофором
     public TrafficLight? prevTL;
@@ -73,7 +73,7 @@ public class TrafficLight {
                 addSignal(baseAddr, Signal.Color.R, switchList);
                 addSignal(baseAddr + 1, Signal.Color.G, switchList);
                 addSignal(baseAddr + 2, Signal.Color.Y, switchList);
-                addSignal(baseAddr + 3, Signal.Color.Y1Blink, switchList);
+                addSignal(baseAddr + 3, Signal.Color.Y1Blink_W, switchList);
                 addSignal(baseAddr + 4, Signal.Color.W, switchList);
                 break;
             // Вхідний
@@ -151,6 +151,7 @@ public class TrafficLight {
     }
     public bool getState() => ind.getState();
     public void sendState() => curSignal?.sendState();
+    public Signal.Color getColor() => curSignal?.getColor() ?? Signal.Color.Off;
 
     // Состояние индикатора
     public void setIndState(bool state) => ind.setState(state);
@@ -171,6 +172,7 @@ public class TrafficLight {
 
         // Цвет сигнала
         public enum Color {
+            Off, // Отключен
             R, // Красный
             G, // Зеленый
             Y, // Желтый

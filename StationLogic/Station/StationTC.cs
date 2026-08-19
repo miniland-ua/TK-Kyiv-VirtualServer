@@ -100,6 +100,10 @@ public partial class Station {
                 turnPair.setEnaFB(state);
             }
             return;
+        
+        // Кнопка відміна маршруту
+        } else if (sw == routeControl.buttonCancelRoute) {
+            return;
         }
 
         // Ручное управление парными стрелками

@@ -6,12 +6,6 @@ public enum Direct {
     Right // Вправо
 }
 
-// Тип маршрута
-public enum TypeRoute {
-    Train, // Поездной
-    Shunt, // Маневровый
-}
-
 // Панель управления маршрутами
 public class RouteControl {
     // Список кнопок маршрутов
@@ -167,103 +161,6 @@ public class RouteControl {
         return true;
     }
 
-    // Обработка нажатия кнопки маршрута
-    public bool pressRouteButton(Switch sw) {
-        // Находим кнопку маршрута по переключателю
-        RouteButton? button = atRouteButton(sw);
-        if (button == null) {
-            return false;
-        }
-        if (startButton == null) {
-            // print($"Стартовая кнопка маршрута: {button.bridge.name}", Color.Gold);
-            startButton = button;
-            // Обновление направления маршрута
-            updateDirection();
-            sendDirection();
-            // Включаем индикатор светофора
-            TrafficLight? trafficLight = startButton.bridge.trafficLight;
-            if (trafficLight != null) {
-                trafficLight.setIndState(true);
-                trafficLight.sendIndState();
-            }
-            
-        } else if (finishButton == null) {
-            // print($"Конечная кнопка маршрута: {button.bridge.name}", Color.Gold);
-            finishButton = button;
-            // Создание маршрута
-            if (createRule()) {
-                print($"Создан маршрут: {startButton.bridge.name} -> {finishButton.bridge.name}", Color.Green);
-                // Постройка маршрута
-                foreach (Rule rule in curRuleList) {
-                    rule.build();
-                    //Задержка для построения маршрута
-                    System.Threading.Thread.Sleep(1000);
-                }
-            } else {
-                print($"Ошибка создания маршрута: {startButton.bridge.name} -> {finishButton.bridge.name}", Color.Red);
-            }
-            // Отключаем индикатор светофора
-            TrafficLight? trafficLight = startButton.bridge.trafficLight;
-            if (trafficLight != null) {
-                trafficLight.setIndState(false);
-                trafficLight.sendIndState();
-            }
-            // Очистка набора маршрута
-            startButton = null;
-            finishButton = null;
-            curRuleList.Clear();
-            updateDirection();
-            sendDirection();
-        }
-        return true;
-    }
-
-    // Создание маршрута
-    public bool createRule() {
-        // Если стартовая и финишная кнопка имеют разные типы - выходим
-        if (startButton?.type != finishButton?.type) {
-            return false;
-        }
-        // Если стартовая и финишная кнопка совпадают - выходим
-        if (startButton == finishButton) {
-            return false;
-        }
-
-        // Ищем кратчайший путь от стартового моста до финишного моста
-        List<Route>? routeList = findPath(startButton!.bridge, finishButton!.bridge);
-        // Если путь не найден - выходим
-        if (routeList == null) {
-            return false;
-        }
-
-        // Разделенные маршруты на несколько правил
-        int startIndex = 0;
-        for (int i = 0; i < routeList.Count; i++) {
-            Route route = routeList[i];
-            // Если маршрут заканчивается на светофоре в нужном направлении - создаем правило
-            Bridge? endBridge = (direct == Direct.Left) ? route.bridgeLeft : route.bridgeRight;
-            if (endBridge?.trafficLight?.dir == direct) {
-                // Маневровый маршрут или поездной маршрут + конечный светофор не маневровый
-                if (typeRoute == TypeRoute.Shunt
-                || (typeRoute == TypeRoute.Train && endBridge?.trafficLight?.type != TrafficLight.Type.Shunting)) {
-                    // Добавляем правило (добавляем все предыдущие маршруты до текущего)
-                    Rule rule = new Rule(routeList.GetRange(startIndex, i + 1 - startIndex), typeRoute, direct);
-                    curRuleList.Add(rule);
-                    startIndex = i + 1;
-                }
-            }
-        }
-        // Остаток маршрутов добавляем в правило
-        if (startIndex < routeList.Count) {
-            Rule rule = new Rule(routeList.GetRange(startIndex, routeList.Count - startIndex), typeRoute, direct);
-            curRuleList.Add(rule);
-        }
-
-        return true;
-    }
-
-
-
     // Направления маршрута
     public void updateDirection() {
         if (startButton == null) {
@@ -306,6 +203,121 @@ public class RouteControl {
     public void sendDirection() {
         indDirection.sendState();
     }
+
+    // Обработка нажатия кнопки маршрута
+    public bool pressRouteButton(Switch sw) {
+        // Находим кнопку маршрута по переключателю
+        RouteButton? button = atRouteButton(sw);
+        if (button == null) {
+            return false;
+        }
+        if (startButton == null) {
+            // print($"Стартовая кнопка маршрута: {button.bridge.name}", Color.Gold);
+            startButton = button;
+            // Обновление направления маршрута
+            updateDirection();
+            sendDirection();
+            // Включаем индикатор светофора
+            TrafficLight? trafficLight = startButton.bridge.trafficLight;
+            if (trafficLight != null) {
+                trafficLight.setIndState(true);
+                trafficLight.sendIndState();
+            }
+            
+        } else if (finishButton == null) {
+            // print($"Конечная кнопка маршрута: {button.bridge.name}", Color.Gold);
+            finishButton = button;
+            // Создание маршрута
+            if (create()) {
+                print($"Создан маршрут: {startButton.bridge.name} -> {finishButton.bridge.name}", Color.Green);
+                // Постройка маршрута
+                foreach (Rule rule in curRuleList) {
+                    rule.build();
+                    //Задержка для построения маршрута
+                    // System.Threading.Thread.Sleep(1000);
+                }
+            } else {
+                print($"Ошибка создания маршрута: {startButton.bridge.name} -> {finishButton.bridge.name}", Color.Red);
+            }
+            // Отключаем индикатор светофора
+            TrafficLight? trafficLight = startButton.bridge.trafficLight;
+            if (trafficLight != null) {
+                trafficLight.setIndState(false);
+                trafficLight.sendIndState();
+            }
+            // Очистка набора маршрута
+            startButton = null;
+            finishButton = null;
+            curRuleList.Clear();
+            updateDirection();
+            sendDirection();
+        }
+        return true;
+    }
+
+    // Создание набора
+    public bool create() {
+        // Если стартовая и финишная кнопка имеют разные типы - выходим
+        if (startButton?.type != finishButton?.type) {
+            return false;
+        }
+        // Если стартовая и финишная кнопка совпадают - выходим
+        if (startButton == finishButton) {
+            return false;
+        }
+
+        // Ищем кратчайший путь от стартового моста до финишного моста
+        List<Route>? routeList = findPath(startButton!.bridge, finishButton!.bridge);
+        // Если путь не найден - выходим
+        if (routeList == null) {
+            return false;
+        }
+
+        // Разделенные маршруты на несколько правил
+        int startIndex = 0;
+        for (int i = 0; i < routeList.Count; i++) {
+            Route route = routeList[i];
+            // Если маршрут заканчивается на светофоре в нужном направлении - создаем правило
+            Bridge? endBridge = (direct == Direct.Left) ? route.bridgeLeft : route.bridgeRight;
+            if (endBridge?.trafficLight?.dir == direct) {
+                // Если маневровый маршрут или поездной маршрут + конечный светофор не маневровый
+                if (typeRoute == TypeRoute.Shunt
+                || (typeRoute == TypeRoute.Train && endBridge?.trafficLight?.type != TrafficLight.Type.Shunting)) {
+                    // Добавляем правило (добавляем все предыдущие маршруты до текущего)
+                    addRule(routeList.GetRange(startIndex, i + 1 - startIndex));
+                    startIndex = i + 1;
+                }
+            }
+        }
+        // Остаток маршрутов добавляем в правило
+        if (startIndex < routeList.Count) {
+            addRule(routeList.GetRange(startIndex, routeList.Count - startIndex));
+        }
+        return true;
+    }
+
+    // Добавление правила в список
+    public void addRule(List<Route> routeList) {
+        // Определяем правильность пути (для поездного маршрута)
+        bool isCorrectWay = true;
+        if (typeRoute == TypeRoute.Train) {
+            foreach (Route route in routeList) {
+                foreach ((TurnPair turnPair, bool state) in route.turn) {
+                    if (state == true) {
+                        isCorrectWay = false;
+                        break;
+                    }
+                }
+            }
+
+        }
+        print($"Создано правило маршрута: {string.Join(" -> ", routeList.Select(r => r.name))}, " +
+                $"Тип: {typeRoute}, " +
+                $"Направление: {direct}, " +
+                $"Тип правила: {typeRoute}, " +
+                $"Правильный путь: {isCorrectWay}", 
+            Color.Green);
+        Rule rule = new Rule(routeList, typeRoute, direct, isCorrectWay);
+        curRuleList.Add(rule);
+    }
 }
-
-

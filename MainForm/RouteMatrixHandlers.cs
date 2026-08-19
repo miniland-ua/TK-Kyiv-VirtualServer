@@ -385,8 +385,8 @@ partial class MainForm
 
         try
         {
-            // sta.clearAllRoutes();
-            // sta.clearAllTrafficLights();
+            sta.clearAllRoutes();
+            sta.clearAllTrafficLights();
             sta.routeControl.pressRouteButton(startButton.control);
             sta.routeControl.pressRouteButton(finishButton.control);
         }

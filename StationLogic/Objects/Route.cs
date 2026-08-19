@@ -48,7 +48,8 @@ public class Route {
     }
 }
 
-// // Rule
-// public class Rule {
-//     public List<Route> routes = new(); // Список маршрутов правила
-// }
+// Тип маршрута
+public enum TypeRoute {
+    Train, // Поездной
+    Shunt, // Маневровый
+}
