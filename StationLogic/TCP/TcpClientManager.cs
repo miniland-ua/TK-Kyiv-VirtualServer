@@ -297,6 +297,6 @@ internal class TcpClientManager
 
     public void Log(string message)
     {
-        OnLogMessage?.Invoke($"[{DateTime.Now:mm:ss}] {message}");
+        // OnLogMessage?.Invoke($"[{DateTime.Now:mm:ss}] {message}");
     }
 }

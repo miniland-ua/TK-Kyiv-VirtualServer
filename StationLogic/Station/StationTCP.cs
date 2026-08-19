@@ -23,7 +23,7 @@ public partial class Station {
 
     // Чтение пакетов по TCP
     public void readTCP(TCP_packet_type packet) {
-        print($"readTCP: Header 0x{packet.Header:X2}, Data: {BitConverter.ToString(packet.Data)}", Color.Peru);
+        // print($"readTCP: Header 0x{packet.Header:X2}, Data: {BitConverter.ToString(packet.Data)}", Color.Peru);
 
         switch(packet.Header) {
             // Status
