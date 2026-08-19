@@ -113,7 +113,7 @@
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 6
       },
       {
         "id": "2ddd8ad048ffcc6d",
@@ -338,37 +338,37 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "obsidian-excalidraw-plugin:Создать новый чертеж": false,
+      "oz-clear-unused-images:Clear Unused Images": false,
+      "obsidian-kanban:Создать новую доску": false,
       "switcher:Меню быстрого перехода": false,
       "graph:Граф": false,
       "canvas:Создать новый холст": false,
       "daily-notes:Сегодняшняя заметка": false,
       "templates:Вставить шаблон": false,
       "command-palette:Открыть палитру команд": false,
-      "bases:Создать новую базу": false,
-      "obsidian-excalidraw-plugin:Создать новый чертеж": false,
-      "obsidian-kanban:Создать новую доску": false,
-      "oz-clear-unused-images:Clear Unused Images": false
+      "bases:Создать новую базу": false
     }
   },
-  "active": "8aaa51f23bd9ecc1",
+  "active": "adc5f59d61836317",
   "lastOpenFiles": [
-    "TurnSolo.base",
+    "Separate.base",
+    "Sections.base",
+    "Routes.base",
+    "RouteControl.base",
     "Шаблоны/Point.md",
+    "TurnSolo.base",
     "Points/P_Н1.md",
     "Points.base",
     "Points/P_М1.md",
-    "Routes.base",
     "Шаблоны/Separate.md",
     "Шаблоны/Peregon.md",
-    "Sections.base",
     "Шаблоны/TurnSolo.md",
     "Шаблоны/TurnPair.md",
     "Шаблоны/Section.md",
     "Шаблоны/Rule.md",
     "Шаблоны/RouteControl.md",
     "Шаблоны/Route.md",
-    "Separate.base",
-    "RouteControl.base",
     "TurnPair.base",
     "RouteControl/М10_shunt.md",
     "Routes/R_1П.md",

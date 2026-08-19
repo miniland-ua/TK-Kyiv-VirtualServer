@@ -103,7 +103,7 @@ internal class TcpClientManager
                     await _client.ConnectAsync(_serverIP, _serverPort, _cts.Token);
                     _stream = _client.GetStream();
                     isConnected = true;
-                    Log("Успешно подключено!");
+                    Log("TCP успешно подключено!");
                     _connectionId = _client.Client.LocalEndPoint?.ToString() ?? "";
 
                     // Запускаем параллельные задачи на чтение и отправку
@@ -117,10 +117,10 @@ internal class TcpClientManager
                     QueueMessage(new TCP_packet_type(0x91, id_msb, id_lsb));
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 isConnected = false;
-                Log($"[Ошибка подключения]: {ex.Message}. Повтор через 3 сек...");
+                // Log($"[Ошибка подключения]: {ex.Message}. Повтор через 3 сек...");
                 CloseConnection();
                 await Task.Delay(3000, _cts.Token);
             }
@@ -157,7 +157,7 @@ internal class TcpClientManager
                 int retries = 0;
                 bool isSent = false;
 
-                Log($"Отправка пакета 0x{sendBuffer[1]:X2} на сервер");
+                // Log($"Отправка пакета 0x{sendBuffer[1]:X2} на сервер");
 
                 while (retries < _retryCount && isSent == false && !ct.IsCancellationRequested)
                 {
@@ -180,7 +180,7 @@ internal class TcpClientManager
 
                 if (!isSent)
                 {
-                    Log($"Не удалось отправить пакет с {retries} попыток");
+                    // Log($"Не удалось отправить пакет с {retries} попыток");
                     Disconnect();   // Отключаемся если сообщение не удалось отправить _retryCount раз
                     break;
                 }
@@ -287,7 +287,7 @@ internal class TcpClientManager
 
     public void Disconnect() // Вызывается при закрытии приложения
     {
-        Log($"Вызван метод Disconnect()");
+        // Log($"Вызван метод Disconnect()");
 
         if (_cts.IsCancellationRequested) return;
         _cts.Cancel();
@@ -297,6 +297,6 @@ internal class TcpClientManager
 
     public void Log(string message)
     {
-        // OnLogMessage?.Invoke($"[{DateTime.Now:mm:ss}] {message}");
+        OnLogMessage?.Invoke($"[{DateTime.Now:mm:ss}] {message}");
     }
 }
