@@ -7,7 +7,7 @@ public class Rule {
     public Bridge? finishBridge; // Конечный мост правила
     public TrafficLight? tl; // Стартовый светофор
     public TypeRoute type; // Тип правила
-    Direct direct; // Направление правила
+    public Direct direct; // Направление правила
     public bool isCorrectWay; // Правильный путь (для поездного маршрута)
 
     public Rule(List<Route> routes, TypeRoute type, Direct direct, bool isCorrectWay = true) {

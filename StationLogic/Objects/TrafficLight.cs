@@ -21,7 +21,7 @@ public class TrafficLight {
     public Bridge? Bridge; // Мост
 
     // Сигналы светофора
-    private List<Signal> signals = new List<Signal>();
+    public List<Signal> signals = new List<Signal>();
     public Signal? curSignal; // Текущий сигнал светофора
 
     // Связь с предыдущим светофором

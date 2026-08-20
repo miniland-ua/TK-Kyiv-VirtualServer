@@ -33,12 +33,12 @@ public class Route {
 
     // Постройка маршрута
     public void build() {
-        setState(true);
-        sendState();
         // Назначение состояния стрелок
         foreach (var (turnPair, state) in turn) {
             turnPair.setState(state);
         }
+        setState(true);
+        sendState();
     }
 
     // Очистка маршрута

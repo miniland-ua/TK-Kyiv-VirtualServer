@@ -50,7 +50,7 @@ public partial class Station {
         routeControl = new RouteControl(routeButtonList);
         // Подписки
         routeControl.actionCreateRule += addRule; // Фиксация созданного правила
-        routeControl.actionRemoveRule += removeRule; // Отмена правила за мостом
+        routeControl.actionCancelRule += cancelRule; // Отмена правила за мостом
         switchList.Add(routeControl.buttonCancelSet);
         switchList.Add(routeControl.buttonCancelRoute);
 
@@ -91,27 +91,20 @@ public partial class Station {
                     continue;
                 }
 
+                // Добавление левого моста маршрута к секции
                 Bridge leftBridge = route.bridgeLeft;
-                Bridge rightBridge = route.bridgeRight;
-
-                // Добавление мостов в секцию
                 if (!section.bridge.Contains(leftBridge)) {
                     section.bridge.Add(leftBridge);
                 }
-
+                // Добавление правого моста маршрута к секции
+                Bridge rightBridge = route.bridgeRight;
                 if (!section.bridge.Contains(rightBridge)) {
                     section.bridge.Add(rightBridge);
                 }
 
-                // Секция находится справа от левого моста
-                if (!leftBridge.sectionList.Contains(section)) {
-                    leftBridge.sectionList.Add(section);
-                }
-
-                // Секция находится слева от правого моста
-                if (!rightBridge.sectionList.Contains(section)) {
-                    rightBridge.sectionList.Insert(0, section);
-                }
+                // Добавление секции к мостам маршрута
+                leftBridge.sectionLeft = section;
+                rightBridge.sectionRight = section;
             }
         }
         // Добавление маршрута к мостам и секциям
@@ -148,6 +141,20 @@ public partial class Station {
             foreach (Bridge bridge in bridgeList) {
                 if (bridge.name == tl.Bridge?.name) {
                     tl.Bridge = bridge;
+                    break;
+                }
+            }
+        }
+        // Добавление секций к одиночным стрелкам
+        foreach (TurnSolo turn in turnSoloList) {
+            foreach (Section section in sectionList) {
+                foreach (TurnPair? turnPair in section.turnPair) {
+                    if (turnPair != null && turnPair.t.Contains(turn)) {
+                        turn.section = section;
+                        break;
+                    }
+                }
+                if (turn.section != null) {
                     break;
                 }
             }
@@ -229,24 +236,6 @@ public partial class Station {
         return contact;
     }
 
-    // Изменение активности маршрута по имени
-    // public async Task setRouteActive(string name, bool state) {
-    //     if (atRoute(name) is Route route) { // Если маршрут найден по имени
-    //         print("setRouteActive: найден маршрут " + route.name);
-    //         route.setState(state); // Изменяем активность маршрута
-    //     }
-    // }
-    // // Изменение занятости маршрута по имени
-    // public async Task setBusy(string name, bool state) {
-    //     foreach (Route route in routeList) {
-    //         if (string.Equals(route.name, name, StringComparison.Ordinal)) {
-    //             print("setBusy: найден маршрут " + route.name);
-    //             // route.setBusy(state);
-    //             return;
-    //         }
-    //     }
-    // }
-
     // Инициализация стрелок
     public void initTurn() {
         print("Инициализация стрелок");
@@ -271,6 +260,10 @@ public partial class Station {
     // Отправка команд по окончанию подключения к TC
     public void connectedTC() {
         print("Запуск TrainController");
+        // Включение кнопки инициализации системы
+        buttonInitStation.setState(true);
+        buttonInitStation.sendState();
+
         // Включение разрешение обратной связи
         buttonEnaFB.setState(true);
         buttonEnaFB.sendState();
@@ -298,6 +291,17 @@ public partial class Station {
         initTurn();
         buttonInitTurn.setState(false);
         buttonInitTurn.sendState();
+
+        int delay = 0;
+        // Подсчет задержки для светофоров
+        foreach (TrafficLight tl in tlList) {
+            delay += 100 * tl.signals.Count;
+        }
+        System.Threading.Thread.Sleep(delay);
+
+        // Отключение кнопки инициализации системы
+        buttonInitStation.setState(false);
+        buttonInitStation.sendState();
         print("Запуск TrainController завершен");
     }
 
@@ -315,8 +319,11 @@ public partial class Station {
         clearAllRoutes();
         // Инициализация всех светофоров
         foreach (TrafficLight tl in tlList) {
-            tl.init();
+            tl.setState(0);
+            tl.sendState();
         }
+        // Инициализация панели управления маршрутами
+        routeControl.init();
         // Отправка всех CAN-контактов
         foreach (Contact ci in contactList) {
             if (ci.type == Contact.Type.CANBus) {
@@ -335,6 +342,7 @@ public partial class Station {
         foreach (Route route in routeList) {
             route.clear();
         }
+        ruleList.Clear();
     }
 
     // Очистка всех включенных светофоров
@@ -351,17 +359,99 @@ public partial class Station {
         ruleList.Add(rule);
     }
 
-    // Отмена правила за мостом
-    public void removeRule(Bridge bridge) {
+    // Отмена правила
+    public async Task cancelRule(Bridge bridge, TypeRoute typeRoute) {
         print($"Отмена правила {bridge.name}", Color.OrangeRed);
         foreach (Rule rule in ruleList) {
-            if (rule.startBridge == bridge) {
+            if (rule.startBridge == bridge && rule.type == typeRoute) {
                 print($"Найдено правило {rule}", Color.OrangeRed);
-                rule.clear();
-                // Удаление правила из списка
-                ruleList.Remove(rule);
+                // Отключаем кнопку отмены маршрута
+                routeControl.setButtonCancelRoute(false);
+                routeControl.sendButtonCancelRoute();
+
+                // Добавляем в список отменяемых правил
+                routeControl.cancelRuleList.Add(rule);
+
+                TypeCancel typeCancel = TypeCancel.None;
+                Switch? switchCancel = null;
+
+                bool isRuleFree = true;
+                // Проверка что все маршруты правила свободны
+                foreach (Route route in rule.routes) {
+                    if (route.section?.getState() == true) {
+                        isRuleFree = false;
+                        break;
+                    }
+                }
+
+                // Если путь не имеет занятей
+                if (isRuleFree) {
+                    print($"Отмена: свободной секции", Color.OrangeRed);
+                    typeCancel = TypeCancel.Free;
+                    switchCancel = routeControl.indCancelFree;
+                // Если путь занят + маневровый маршрут
+                } else if (!isRuleFree && rule.type == TypeRoute.Shunt) {
+                    print($"Отмена: маневрового правила", Color.OrangeRed);
+                    typeCancel = TypeCancel.Shunt;
+                    switchCancel = routeControl.indCancelShunt;
+                // Если путь занят + поездной маршрут
+                } else if (!isRuleFree && rule.type == TypeRoute.Train) {
+                    print($"Отмена: поездного правила", Color.OrangeRed);
+                    typeCancel = TypeCancel.Train;
+                    switchCancel = routeControl.indCancelTrain;
+                }
+
+                // Включаем определенный индикатор отмены
+                if (switchCancel != null) {
+                    switchCancel.setState(true);
+                    switchCancel.sendState();
+                }
+
+                // Задержка отключения маршрута
+                switch (typeCancel) {
+                    case TypeCancel.Free:
+                        await Task.Delay(1000);
+                        break;
+                    case TypeCancel.Shunt:
+                        await Task.Delay(3000);
+                        break;
+                    case TypeCancel.Train:
+                        await Task.Delay(5000);
+                        break;
+                }
+
+                // Удаляем правило из списка отменяемых правил
+                if (typeCancel != TypeCancel.None) {
+                    // Отключаем индикатор отмены определенного типа
+                    if (switchCancel != null) {
+                        switchCancel.setState(false);
+                        switchCancel.sendState();
+                    }
+                    // Отключаем маршрут
+                    rule.clear();
+                    // Удаляем правило из списка отменяемых правил
+                    routeControl.cancelRuleList.Remove(rule);
+                    // Удаление правила из общего списка
+                    ruleList.Remove(rule);
+
+                    // Если нету отменяемых правил - отключаем индикатор
+                    if (routeControl.cancelRuleList.Count == 0) {
+                        if (routeControl.indCancel.getState()) {
+                            routeControl.indCancel.setState(false);
+                            routeControl.indCancel.sendState();
+                        }
+                    }
+                }
                 break;
             }
         }
+
     }
+    private enum TypeCancel {
+        None, // Нет
+        Free, // Свободная секция
+        Shunt, // Маневровый маршрут
+        Train // Поездной маршрут
+    }
+
 }

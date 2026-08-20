@@ -102,8 +102,36 @@ public partial class Station {
         // Кнопка відміна маршруту
         } else if (sw == routeControl.buttonCancelRoute) {
             print($"Кнопка отмены маршрута: {state}", Color.Green);
-            routeControl.setButtonCancelRoute(state);
+
+            // Индикатор отмены маршрута
+            bool newStateInd;
+            // Если кнопку включили
+            if (state) {
+                newStateInd = true;
+                routeControl.clearSet(); // Очистка набора маршрута
+            // Если кнопку отключили
+            } else {
+                // Если отменяемых нету
+                if (routeControl.cancelRuleList.Count == 0) {
+                    newStateInd = false;
+                // Если есть отменяемые правила 
+                } else {
+                    newStateInd = true;
+                }
+            }
+            if (routeControl.indCancel.getState() != newStateInd) {
+                routeControl.indCancel.setState(newStateInd);
+                routeControl.indCancel.sendState();
+            }
             return;
+        }
+
+        // Кнопка занятости секции
+        foreach (Section section in sectionList) {
+            if (sw == section.control) {
+                print($"Секция: {section.name}, состояние: {state}", Color.Green);
+                return;
+            }
         }
 
         // Ручное управление парными стрелками

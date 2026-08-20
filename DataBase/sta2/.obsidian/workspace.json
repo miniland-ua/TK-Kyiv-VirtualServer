@@ -151,15 +151,13 @@
             "id": "8aaa51f23bd9ecc1",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "bases",
               "state": {
-                "file": "Шаблоны/Point.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": false
+                "file": "Points.base",
+                "viewName": "Таблица"
               },
-              "icon": "lucide-file",
-              "title": "Point"
+              "icon": "lucide-table",
+              "title": "Points"
             }
           }
         ],
@@ -350,8 +348,9 @@
       "bases:Создать новую базу": false
     }
   },
-  "active": "adc5f59d61836317",
+  "active": "8aaa51f23bd9ecc1",
   "lastOpenFiles": [
+    "TurnPair.base",
     "Separate.base",
     "Sections.base",
     "Routes.base",
@@ -369,7 +368,6 @@
     "Шаблоны/Rule.md",
     "Шаблоны/RouteControl.md",
     "Шаблоны/Route.md",
-    "TurnPair.base",
     "RouteControl/М10_shunt.md",
     "Routes/R_1П.md",
     "TurnPair/TP2-4.md",

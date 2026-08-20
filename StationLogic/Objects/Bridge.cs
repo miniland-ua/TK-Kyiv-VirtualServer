@@ -3,6 +3,8 @@ public class Bridge {
     public string name = ""; // Имя
     public TrafficLight? trafficLight; // Светофор
     public List<Section> sectionList = new(); // Список секций
+    public Section? sectionLeft; // Левая секция
+    public Section? sectionRight; // Правая секция
     public List<Route> routeList = new(); // Список маршрутов
 
     // Конструктор

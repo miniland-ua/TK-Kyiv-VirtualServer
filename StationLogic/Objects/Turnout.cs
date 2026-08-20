@@ -6,7 +6,7 @@ public class TurnPair {
     public List<TurnSolo> t = new(2); // Список одиночных стрелок
     private Contact control; // Переключатель стрелки
     public TurnControl tc; // Панель управления стрелкой
-    public bool isNormalState = true; // Нормальное состояние стрелки (без ошибок обратной связи)
+    public bool isError = false; // Наличие ошибки обратной связи
     private bool isVisibleInd = false; // Включение отображения индикаторов стрелки
     private bool enaFB = true; // Разрешение обратной связи стрелки
     
@@ -30,8 +30,6 @@ public class TurnPair {
         // Подписки для отправки команд на сервер
         this.tc.actionSendContact += (contact) => actionSendContact?.Invoke(contact);
         this.tc.actionSendSwitch += (sw) => actionSendSwitch?.Invoke(sw);
-
-        init();
     }
 
     // Инициализация
@@ -52,14 +50,39 @@ public class TurnPair {
         updateFBLost();
     }
 
+    // Разрешение изменения состояния стрелки
+    public bool enaChange() {
+        foreach (TurnSolo turn in t) {
+            Section? section = turn.section;
+            // Если на стрелке есть занятость секции
+            if (section != null && section.getState()) {
+                return false;
+            }
+            // Если на стрелке есть маршрут
+            foreach (Route? route in section?.route ?? new List<Route?>()) {
+                if (route != null && route.getState()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     // Состояния стрелки
     public void setState(bool state) {
+        // Если запрещено изменение состояния стрелки
+        if (!enaChange()) {
+            print($"Запрещено изменение состояния стрелки: {name}", Color.Red);
+            return;
+        }
+
+        // Установка состояния стрелки
         control.setState(state);
         foreach (TurnSolo turn in t) {
             turn.setState(state);
         }
-        updateFBLost();
-        updateIndication();
+        updateFBLost(); // Обновление состояния обратной связи стрелки
+        updateIndication(); // Обновление индикаторов стрелки
     }
     public bool getState() => control.getState();
     public void sendState() => actionSendContact?.Invoke(control);
@@ -67,18 +90,18 @@ public class TurnPair {
 
     // Обратная связь стрелки (обновление состояния fbLost)
     public void updateFBLost() {
-        bool prevNormalState = isNormalState;
+        bool prevError = isError;
         // Проверка состояния обратной связи стрелки
         if ( (!control.getState() && tc.fbC.getState() && !tc.fbT.getState()) // Стрелка в положении C
         || (control.getState() && !tc.fbC.getState() && tc.fbT.getState()) // Стрелка в положении T
         || !enaFB) { // Запрещена обратная связь
-            isNormalState = true;
+            isError = false;
         } else {
-            isNormalState = false;
+            isError = true;
         }
         // Если состояние обратной связи стрелки изменилось
-        if (prevNormalState != isNormalState) {
-            tc.fbLost.setState(!isNormalState); // Обновление состояния
+        tc.fbLost.setState(isError); // Обновление состояния
+        if (prevError != isError) {
             tc.fbLost.sendState(); // Отправка состояния на сервер
         }
         updateIndication();
@@ -124,9 +147,9 @@ public class TurnPair {
     // Контроль стрелки (обновление индикаторов)
     public void updateIndication() {
         foreach (TurnSolo turn in t) {
-            turn.setIndC(isVisibleInd && isNormalState && !turn.getState());
+            turn.setIndC(isVisibleInd && !isError && !turn.getState());
             turn.sendIndC();
-            turn.setIndT(isVisibleInd && isNormalState && turn.getState());
+            turn.setIndT(isVisibleInd && !isError && turn.getState());
             turn.sendIndT();
         }
     }
@@ -142,6 +165,8 @@ public class TurnSolo {
     private Switch control; // Реальный переключатель стрелки (диспетчерский)
     private Contact indC; // Индикатор стрелки (C)
     private Contact indT; // Индикатор стрелки (T)
+
+    public Section? section; // Секция стрелки
 
     // Событие изменения состояния стрелки
     public event Action<Contact>? actionSendContact;

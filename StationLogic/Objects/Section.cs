@@ -1,7 +1,7 @@
 // Секция
 public class Section {
     public string name; // Имя
-    private Switch control; // Переключатель секции
+    public Switch control; // Переключатель секции
     private Contact realOccup; // Реальная занятость секции
     public List<Route?> route = new(); // Список маршрутов
     public List<Bridge?> bridge = new(); // Мосты
