@@ -129,4 +129,14 @@ public class Rule {
         }
         tl.sendState();
     }
+
+    // Очистка правила
+    public void clear() {
+        // Очистка всех маршрутов
+        foreach (Route route in routes) {
+            route.clear();
+        }
+        // Очистка светофора
+        tl?.clear();
+    }
 }

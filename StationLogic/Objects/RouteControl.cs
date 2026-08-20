@@ -37,6 +37,8 @@ public class RouteControl {
 
     // Событие отправки команд для сервера
     public event Action<Switch>? actionSendSwitch;
+    public event Action<Rule>? actionCreateRule;
+    public event Action<Bridge>? actionRemoveRule;
 
 
     // Конструктор
@@ -62,6 +64,11 @@ public class RouteControl {
         }
 
     }
+
+    // Кнопка для отмены маршрута
+    public void setButtonCancelRoute(bool state) => buttonCancelRoute.setState(state);
+    public bool getButtonCancelRoute() => buttonCancelRoute.getState();
+    public void sendButtonCancelRoute() => actionSendSwitch?.Invoke(buttonCancelRoute);
 
     // Поиск кнопки маршрута
     public RouteButton? atRouteButton(Switch sw) {
@@ -158,6 +165,24 @@ public class RouteControl {
             }
         }
 
+        foreach (Route route in routeList) {
+            // Если один из маршрутов уже активный
+            if (route.getState()) {
+                return false;
+            }
+            // Если одна из стрелок по пути имеет ошибку обратной связи
+            foreach ((TurnPair turnPair, bool state) in route.turn) {
+                if (state == true && !turnPair.isNormalState) {
+                    return false;
+                }
+            }
+            // Если на секция с маршрутом есть занятый участок
+            Section? section = route.section;
+            if (section?.getState() == true) {
+                return false;
+            }
+        }
+
         return true;
     }
 
@@ -211,6 +236,16 @@ public class RouteControl {
         if (button == null) {
             return false;
         }
+        // Если нажата кнопка отмены маршрута - отменяем маршрут
+        if (buttonCancelRoute.getState()) {
+            // Отменяем маршрут за мостом
+            actionRemoveRule?.Invoke(button.bridge);
+            // Отключаем кнопку отмены маршрута
+            setButtonCancelRoute(false);
+            sendButtonCancelRoute();
+            return true;
+        }
+
         if (startButton == null) {
             // print($"Стартовая кнопка маршрута: {button.bridge.name}", Color.Gold);
             startButton = button;
@@ -239,18 +274,7 @@ public class RouteControl {
             } else {
                 print($"Ошибка создания маршрута: {startButton.bridge.name} -> {finishButton.bridge.name}", Color.Red);
             }
-            // Отключаем индикатор светофора
-            TrafficLight? trafficLight = startButton.bridge.trafficLight;
-            if (trafficLight != null) {
-                trafficLight.setIndState(false);
-                trafficLight.sendIndState();
-            }
-            // Очистка набора маршрута
-            startButton = null;
-            finishButton = null;
-            curRuleList.Clear();
-            updateDirection();
-            sendDirection();
+            clearSet(); // Очистка набора маршрута
         }
         return true;
     }
@@ -319,5 +343,23 @@ public class RouteControl {
             Color.Green);
         Rule rule = new Rule(routeList, typeRoute, direct, isCorrectWay);
         curRuleList.Add(rule);
+        actionCreateRule?.Invoke(rule);
     }
+
+    // Очистка набора маршрута
+    public void clearSet() {
+        // Отключаем индикатор светофора
+        TrafficLight? trafficLight = startButton?.bridge.trafficLight;
+        if (trafficLight != null) {
+            trafficLight.setIndState(false);
+            trafficLight.sendIndState();
+        }
+        // Очистка набора маршрута
+        startButton = null;
+        finishButton = null;
+        curRuleList.Clear();
+        updateDirection();
+        sendDirection();
+    }
+        
 }

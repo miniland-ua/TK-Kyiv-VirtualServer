@@ -158,6 +158,23 @@ public class TrafficLight {
     public bool getIndState() => ind.getState();
     public void sendIndState() => actionSendContact?.Invoke(ind);
 
+    // Отключение светофора
+    public void clear() {
+        switch (type) {
+            case Type.PreInPAB:
+            case Type.OutPAB:
+            case Type.PassAB:
+            case Type.PreInAB:
+            case Type.OutAB:
+            case Type.In:
+            case Type.InAdd:
+            case Type.Shunting:
+                setState(Signal.Color.R);
+                break;
+        }
+        sendState();
+    }
+
     // Сигнал светофора
     public class Signal {
         private Switch control; // Переключатель светофора

@@ -98,7 +98,7 @@ internal class TcpClientManager
                     isConnected = false;
                     CloseConnection();
 
-                    Log($"Попытка подключения к {_serverIP}:{_serverPort}...");
+                    // Log($"Попытка подключения к {_serverIP}:{_serverPort}...");
                     _client = new TcpClient();
                     await _client.ConnectAsync(_serverIP, _serverPort, _cts.Token);
                     _stream = _client.GetStream();

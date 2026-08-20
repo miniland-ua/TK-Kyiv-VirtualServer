@@ -46,8 +46,14 @@ public partial class Station {
         buttonTurnControl = createSwitch(Switch.Type.Virt_Push, 1400); // Кнопка контроля стрелок
         // Создание панелей управления
         separateControl = new SeparateControl(separateList);
+        // Создание панели управления маршрутами
         routeControl = new RouteControl(routeButtonList);
-        
+        // Подписки
+        routeControl.actionCreateRule += addRule; // Фиксация созданного правила
+        routeControl.actionRemoveRule += removeRule; // Отмена правила за мостом
+        switchList.Add(routeControl.buttonCancelSet);
+        switchList.Add(routeControl.buttonCancelRoute);
+
         // Подписки одиночных стрелок
         foreach (TurnSolo turn in turnSoloList) {
             turn.actionSendContact += sendContact;
@@ -339,4 +345,23 @@ public partial class Station {
         }
     }
 
+    // Фиксация созданного правила
+    public void addRule(Rule rule) {
+        print($"Фиксация правила {rule}", Color.OrangeRed);
+        ruleList.Add(rule);
+    }
+
+    // Отмена правила за мостом
+    public void removeRule(Bridge bridge) {
+        print($"Отмена правила {bridge.name}", Color.OrangeRed);
+        foreach (Rule rule in ruleList) {
+            if (rule.startBridge == bridge) {
+                print($"Найдено правило {rule}", Color.OrangeRed);
+                rule.clear();
+                // Удаление правила из списка
+                ruleList.Remove(rule);
+                break;
+            }
+        }
+    }
 }

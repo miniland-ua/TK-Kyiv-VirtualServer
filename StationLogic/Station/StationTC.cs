@@ -60,13 +60,11 @@ public partial class Station {
         if (state) {
             // Кнопки управления маршрутом
             if (routeControl.pressRouteButton(sw)) {
-                // Если появился маршрут - добавляем его в общий список
-                List<Rule> curRuleList = routeControl.curRuleList;
-                foreach (Rule rule in curRuleList) {
-                    if (!ruleList.Contains(rule)) {
-                        ruleList.Add(rule);
-                    }
-                }
+                return;
+            // Кнопка відміни набору
+            } else if (sw == routeControl.buttonCancelSet) {
+                print($"Кнопка отмены набора: {true}", Color.Green);
+                routeControl.clearSet();
                 return;
             }
         }
@@ -103,6 +101,8 @@ public partial class Station {
         
         // Кнопка відміна маршруту
         } else if (sw == routeControl.buttonCancelRoute) {
+            print($"Кнопка отмены маршрута: {state}", Color.Green);
+            routeControl.setButtonCancelRoute(state);
             return;
         }
 
