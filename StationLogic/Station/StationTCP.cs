@@ -9,8 +9,10 @@ public partial class Station {
             TurnControl tc = turnPair.tc;
             if (tc.fbC.addr == addr && tc.fbC.input == input) {
                 turnPair.setFBC(state);
+                turnPair.tc.fbC.sendState();
             } else if (tc.fbT.addr == addr && tc.fbT.input == input) {
                 turnPair.setFBT(state);
+                turnPair.tc.fbT.sendState();
             }
         }
     }

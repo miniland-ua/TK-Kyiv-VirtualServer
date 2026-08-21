@@ -32,7 +32,7 @@ public class Z21Server {
     public event Action<bool>? status; //Статус сервера: true = запущен, false = остановлен.
     public event Action<ushort, byte, bool>? switchRead; // Событие чтения состояния свитча
     public event Action<ushort>? switchRequest; // Событие запроса состояния свитча
-    public event Action? contactRequest; // Событие запроса состояния контакта
+    public event Func<Task>? contactRequest; // Асинхронное событие запроса состояния контакта
     public event Action<ushort, byte, byte>? extAccessoryRead; // Событие чтения состояния extended accessory
 
     // Данные
@@ -434,7 +434,11 @@ public class Z21Server {
 
                     if (type == 0x00 &&
                         (networkId == 0xD000 || networkId == 0xD001)) {
-                        contactRequest?.Invoke();
+                        if (contactRequest is { } handlers) {
+                            foreach (Func<Task> handler in handlers.GetInvocationList()) {
+                                await handler();
+                            }
+                        }
                     }
                 }
                 // Сообщение состояния одного CAN-контакта

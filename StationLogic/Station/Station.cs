@@ -146,16 +146,14 @@ public partial class Station {
             }
         }
         // Добавление секций к одиночным стрелкам
-        foreach (TurnSolo turn in turnSoloList) {
-            foreach (Section section in sectionList) {
-                foreach (TurnPair? turnPair in section.turnPair) {
-                    if (turnPair != null && turnPair.t.Contains(turn)) {
-                        turn.section = section;
-                        break;
-                    }
+        foreach (Section section in sectionList) {
+            foreach (TurnSolo? turn in section.turnSolo) {
+                if (turn == null) {
+                    continue;
                 }
-                if (turn.section != null) {
-                    break;
+
+                if (!turn.sections.Contains(section)) {
+                    turn.sections.Add(section);
                 }
             }
         }
@@ -258,7 +256,7 @@ public partial class Station {
     }
 
     // Отправка команд по окончанию подключения к TC
-    public void connectedTC() {
+    public async Task connectedTC() {
         print("Запуск TrainController");
         // Включение кнопки инициализации системы
         buttonInitStation.setState(true);
@@ -297,7 +295,7 @@ public partial class Station {
         foreach (TrafficLight tl in tlList) {
             delay += 100 * tl.signals.Count;
         }
-        System.Threading.Thread.Sleep(delay);
+        await Task.Delay(delay);
 
         // Отключение кнопки инициализации системы
         buttonInitStation.setState(false);

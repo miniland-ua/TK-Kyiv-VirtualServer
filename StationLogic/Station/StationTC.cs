@@ -53,7 +53,7 @@ public partial class Station {
         // Кнопка контроля стрелок
         if (sw == buttonTurnControl) {
             foreach (TurnPair turnPair in turnPairList) {
-                turnPair.setIndVisible(state);
+                turnPair.setModeControl(state);
             }
             return;
         }
@@ -130,6 +130,7 @@ public partial class Station {
         foreach (Section section in sectionList) {
             if (sw == section.control) {
                 print($"Секция: {section.name}, состояние: {state}", Color.Green);
+                section.setState(state);
                 return;
             }
         }

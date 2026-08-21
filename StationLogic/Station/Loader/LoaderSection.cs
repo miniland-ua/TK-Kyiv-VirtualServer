@@ -13,6 +13,9 @@ public partial class Station {
         Dictionary<string, string> fields = new();
         // Список имен маршрутов секции
         List<string> routeNames = new();
+        // Список имен одиночных стрелок секции
+        List<string> turnSoloNames = new();
+        string? currentList = null;
         // Чтение всех строк файла
         string[] lines = File.ReadAllLines(filePath);
 
@@ -25,9 +28,9 @@ public partial class Station {
                 break;
             }
 
-            // Читаем маршруты из списка Routes
+            // Читаем элементы текущего списка
             if (line.StartsWith("-")) {
-                string routeName = line
+                string itemName = line
                     .TrimStart('-')
                     .Trim()
                     .Trim('"')
@@ -35,24 +38,32 @@ public partial class Station {
                     .Replace("]]", "");
 
                 // Убираем путь к файлу
-                routeName = routeName.Split('/').Last();
-                // Убираем префикс маршрута
-                if (routeName.StartsWith("R_")) {
-                    routeName = routeName[2..];
-                }
+                itemName = itemName.Split('/').Last();
 
-                routeNames.Add(routeName);
+                if (currentList == "Routes") {
+                    // Убираем префикс маршрута
+                    if (itemName.StartsWith("R_")) {
+                        itemName = itemName[2..];
+                    }
+                    routeNames.Add(itemName);
+                } else if (currentList == "turnSolo") {
+                    turnSoloNames.Add(itemName);
+                }
                 continue;
             }
 
             // Разделяем строку на 2 части
             string[] parts = line.Split(':', 2);
-            if (parts.Length == 2 && parts[1].Trim() != "") {
+            if (parts.Length == 2) {
                 // Имя параметра
                 string key = parts[0].Trim();
+                currentList = key is "Routes" or "turnSolo" ? key : null;
+
                 // Значение параметра (кавычки убираем если они есть)
                 string value = parts[1].Trim().Trim('"');
-                fields[key] = value;
+                if (value != "") {
+                    fields[key] = value;
+                }
             }
         }
 
@@ -68,6 +79,20 @@ public partial class Station {
             }
 
             sectionRoutes.Add(route);
+        }
+
+        // Находим одиночные стрелки секции по именам
+        List<TurnSolo?> sectionTurnSolo = new();
+        foreach (string turnName in turnSoloNames) {
+            TurnSolo? turn = turnSoloList.Find(turn => turn.name == turnName);
+
+            if (turn == null) {
+                throw new InvalidDataException(
+                    $"Не найдена одиночная стрелка '{turnName}' для секции '{filePath}'"
+                );
+            }
+
+            sectionTurnSolo.Add(turn);
         }
 
         // Разделяем адрес и вход реальной занятости секции
@@ -93,7 +118,9 @@ public partial class Station {
                 int.Parse(realOccup[1])
             ),
             // Список маршрутов секции
-            sectionRoutes
+            sectionRoutes,
+            // Список одиночных стрелок секции
+            sectionTurnSolo
         );
         sectionList.Add(section);
 

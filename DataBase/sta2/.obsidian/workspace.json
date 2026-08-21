@@ -6,6 +6,7 @@
       {
         "id": "bf027613fc079fa4",
         "type": "tabs",
+        "dimension": 41.689373297002724,
         "children": [
           {
             "id": "9a20c88fb1701c0d",
@@ -113,11 +114,12 @@
             }
           }
         ],
-        "currentTab": 6
+        "currentTab": 4
       },
       {
         "id": "2ddd8ad048ffcc6d",
         "type": "tabs",
+        "dimension": 58.31062670299727,
         "children": [
           {
             "id": "1b2167077a6804b4",
@@ -138,30 +140,19 @@
             "id": "7f654353cb1faf6f",
             "type": "leaf",
             "state": {
-              "type": "bases",
+              "type": "markdown",
               "state": {
-                "file": "TurnSolo.base",
-                "viewName": "Таблица"
+                "file": "Sections/Sect_T9.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": false
               },
-              "icon": "lucide-table",
-              "title": "TurnSolo"
-            }
-          },
-          {
-            "id": "8aaa51f23bd9ecc1",
-            "type": "leaf",
-            "state": {
-              "type": "bases",
-              "state": {
-                "file": "Points.base",
-                "viewName": "Таблица"
-              },
-              "icon": "lucide-table",
-              "title": "Points"
+              "icon": "lucide-file",
+              "title": "Sect_T9"
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -220,7 +211,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 314.6261444091797
+    "width": 255.5
   },
   "right": {
     "id": "ab21e8775e941728",
@@ -348,41 +339,41 @@
       "bases:Создать новую базу": false
     }
   },
-  "active": "8aaa51f23bd9ecc1",
+  "active": "8da7e7c685b0bbed",
   "lastOpenFiles": [
-    "TurnPair.base",
-    "Separate.base",
+    "Sections/Sect_T9.md",
     "Sections.base",
+    "Sections/Sect_T8-10.md",
+    "Sections/Sect_T7.md",
+    "Sections/Sect_T6-12.md",
+    "Sections/Sect_T4.md",
+    "Sections/Sect_T3.md",
+    "Sections/Sect_T2.md",
+    "Sections/Sect_T1-5.md",
+    "Sections/Sect_ЧДП.md",
+    "Sections/Sect_3П.md",
+    "Sections/Sect_2П.md",
+    "Шаблоны/Section.md",
+    "Sections/Sect_2-8П.md",
+    "Sections/Sect_1П.md",
+    "Шаблоны/Separate.md",
+    "TurnSolo.base",
     "Routes.base",
     "RouteControl.base",
-    "Шаблоны/Point.md",
-    "TurnSolo.base",
-    "Points/P_Н1.md",
     "Points.base",
+    "TurnPair.base",
+    "Separate.base",
+    "Шаблоны/Point.md",
+    "Points/P_Н1.md",
     "Points/P_М1.md",
-    "Шаблоны/Separate.md",
     "Шаблоны/Peregon.md",
     "Шаблоны/TurnSolo.md",
     "Шаблоны/TurnPair.md",
-    "Шаблоны/Section.md",
     "Шаблоны/Rule.md",
     "Шаблоны/RouteControl.md",
     "Шаблоны/Route.md",
     "RouteControl/М10_shunt.md",
-    "Routes/R_1П.md",
-    "TurnPair/TP2-4.md",
-    "TurnPair/TP12.md",
-    "TurnPair/TP10.md",
-    "TurnPair/TP111.md",
-    "TurnPair/TP1.md",
-    "TurnPair/TP5-7.md",
-    "TurnPair/TP9.md",
-    "TurnPair/TP6-8.md",
-    "Points/P_Н4.md",
     "Rule",
-    "Separate/Sep_1-5СП.md",
-    "TurnPair/TP3.md",
-    "Points/P_ЧД.md",
     "99-Files/Pasted Image 20260807120218_656.png",
     "05-Work/Макеты/Тренажер_2026/Data/Routes.base",
     "05-Work/Макеты/Тренажер_2026/Data/RouteControl.base",

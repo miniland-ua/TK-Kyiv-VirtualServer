@@ -9,6 +9,7 @@ views:
       - Routes
       - addr_SV
       - addr_CR
+      - turnSolo
     sort:
       - property: Occup
         direction: ASC

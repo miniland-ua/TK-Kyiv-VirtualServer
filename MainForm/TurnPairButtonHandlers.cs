@@ -101,7 +101,7 @@ partial class MainForm
             UseVisualStyleBackColor = true
         };
 
-        button.Click += (_, _) => SendFeedbackContact(contact, state);
+        button.Click += (_, _) => sta.readTCPContact(contact.addr, contact.input, state);
 
         return button;
     }
@@ -176,13 +176,7 @@ partial class MainForm
             ? turnPair.tc.fbT
             : turnPair.tc.fbC;
 
-        SendFeedbackContact(contact, state);
-    }
-
-    private static void SendFeedbackContact(Contact contact, bool state)
-    {
-        contact.setState(state);
-        contact.sendState();
+        sta.readTCPContact(contact.addr, contact.input, state);
     }
 
     private void buttonTP1_T_On_Click(object? sender, EventArgs e) => HandleDesignerTurnPairButton(sender);

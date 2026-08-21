@@ -10,6 +10,10 @@
 
   <ItemGroup>
     <None Include=".github\copilot-instructions.md" />
+    <None Update="DataBase\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

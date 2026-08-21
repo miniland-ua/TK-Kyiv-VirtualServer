@@ -1,3 +1,5 @@
+using static ConsoleLog;
+
 // Секция
 public class Section {
     public string name; // Имя
@@ -6,24 +8,33 @@ public class Section {
     public List<Route?> route = new(); // Список маршрутов
     public List<Bridge?> bridge = new(); // Мосты
     public List<TurnPair?> turnPair = new(); // Список стрелок секции
+    public List<TurnSolo?> turnSolo = new(); // Список одиночных стрелок секции
 
     // События отправки команд для сервера
     public event Action<Contact>? actionSendContact;
     public event Action<Switch>? actionSendSwitch;
 
     // Конструктор
-    public Section(string name, Switch control, Contact realOccup, List<Route?> route) {
+    public Section(string name, Switch control, Contact realOccup,
+        List<Route?> route, List<TurnSolo?> turnSolo) {
         this.name = name;
         this.control = control;
         this.realOccup = realOccup;
         this.route = route;
+        this.turnSolo = turnSolo;
         // Подписки для отправки команд на сервер
         this.control.actionSend += (sw) => actionSendSwitch?.Invoke(this.control);
         this.realOccup.actionSend += (contact) => actionSendContact?.Invoke(this.realOccup);
     }
 
     // Состояния секции
-    public void setState(bool state) => control.setState(state);
+    public void setState(bool state) {
+        control.setState(state);
+        // Обновление индикаторов стрелок секции
+        foreach (TurnSolo? turn in turnSolo) {
+            turn?.updateInd();
+        }
+    }
     public bool getState() => control.getState();
     public void sendState() => actionSendSwitch?.Invoke(control);
 }

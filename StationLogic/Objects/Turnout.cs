@@ -7,7 +7,6 @@ public class TurnPair {
     private Contact control; // Переключатель стрелки
     public TurnControl tc; // Панель управления стрелкой
     public bool isError = false; // Наличие ошибки обратной связи
-    private bool isVisibleInd = false; // Включение отображения индикаторов стрелки
     private bool enaFB = true; // Разрешение обратной связи стрелки
     
     // Режим работы стрелки
@@ -34,13 +33,12 @@ public class TurnPair {
 
     // Инициализация
     public void init() {
-        setIndVisible(false); // Отключение отображения индикаторов стрелки
+        setModeControl(false); // Режим контроля стрелки
         setEnaFB(true); // Разрешение обратной связи стрелки
         // Индикация стрелок
         foreach (TurnSolo turn in t) {
             turn.setIndC(false);
             turn.setIndT(false);
-
         }
         // Панель управления (обратная связь)
         tc.fbC.setState(false);
@@ -82,11 +80,9 @@ public class TurnPair {
             turn.setState(state);
         }
         updateFBLost(); // Обновление состояния обратной связи стрелки
-        updateIndication(); // Обновление индикаторов стрелки
     }
     public bool getState() => control.getState();
     public void sendState() => actionSendContact?.Invoke(control);
-
 
     // Обратная связь стрелки (обновление состояния fbLost)
     public void updateFBLost() {
@@ -100,11 +96,20 @@ public class TurnPair {
             isError = true;
         }
         // Если состояние обратной связи стрелки изменилось
-        tc.fbLost.setState(isError); // Обновление состояния
+        print($"updateFBLost: {isError},"
+            + $"стрелка: {name}, "
+            + $"fbC: {tc.fbC.getState()}, "
+            + $"fbT: {tc.fbT.getState()}, "
+            + $"control: {control.getState()}, "
+            + $"enaFB: {enaFB}");
         if (prevError != isError) {
+            foreach (TurnSolo turn in t) {
+                turn.isError = isError;
+                turn.updateInd();
+            }
+            tc.fbLost.setState(isError); // Обновление состояния
             tc.fbLost.sendState(); // Отправка состояния на сервер
         }
-        updateIndication();
     }
     public void setFBC(bool state) {
         tc.fbC.setState(state);
@@ -144,19 +149,15 @@ public class TurnPair {
         }
     }
 
-    // Контроль стрелки (обновление индикаторов)
-    public void updateIndication() {
+    // Контроль стрелки
+    public void setModeControl(bool state) {
         foreach (TurnSolo turn in t) {
-            turn.setIndC(isVisibleInd && !isError && !turn.getState());
-            turn.sendIndC();
-            turn.setIndT(isVisibleInd && !isError && turn.getState());
-            turn.sendIndT();
+            // Обновление флага режима контроля стрелки
+            turn.isModeControl = state;
+            turn.updateInd();
         }
     }
-    public void setIndVisible(bool state) {
-        isVisibleInd = state;
-        updateIndication();
-    }
+
 }
 
 // Стрелка
@@ -166,7 +167,10 @@ public class TurnSolo {
     private Contact indC; // Индикатор стрелки (C)
     private Contact indT; // Индикатор стрелки (T)
 
-    public Section? section; // Секция стрелки
+    public List<Section> sections = new(); // Секции стрелки
+    public Section? section => sections.FirstOrDefault(); // Первая секция стрелки для старого кода
+    public bool isModeControl = false; // Контроль стрелки
+    public bool isError = false; // Наличие ошибки обратной связи
 
     // Событие изменения состояния стрелки
     public event Action<Contact>? actionSendContact;
@@ -190,6 +194,37 @@ public class TurnSolo {
     public bool getIndT() => indT.getState();
     public void sendIndC() => actionSendContact?.Invoke(this.indC);
     public void sendIndT() => actionSendContact?.Invoke(this.indT);
+
+    // Обновление индикаторов стрелки
+    public void updateInd() {
+        bool newStateIndC = false;
+        bool newStateIndT = false;
+        bool isBusy = sections.Any(section => section.getState());
+        // Если стрелка в режиме контроля
+        if (isModeControl) {
+            // Если нету ошибки обратной связи
+            if (!isError) {
+                newStateIndC = getState();
+                newStateIndT = !getState();
+            }
+        // Если стрелка не в режиме контроля + имеет занятость секции
+        } else if (isBusy) {
+            newStateIndC = getState();
+            newStateIndT = !getState();
+        // Если стрелка не в режиме контроля + нету занятости секции
+        } else {
+            newStateIndC = false;
+            newStateIndT = false;
+        } 
+        if (getIndC() != newStateIndC) {
+            setIndC(newStateIndC);
+            sendIndC();
+        }
+        if (getIndT() != newStateIndT) {
+            setIndT(newStateIndT);
+            sendIndT();
+        }
+    }
 }
 
 // Панель управления стрелками

@@ -33,6 +33,7 @@
     "graph_icon": "text",
     "Route1": "multitext",
     "Turns": "multitext",
-    "Routes": "multitext"
+    "Routes": "multitext",
+    "turnSolo": "multitext"
   }
 }
